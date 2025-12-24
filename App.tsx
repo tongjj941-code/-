@@ -188,7 +188,7 @@ const SearchableHotelSelect: React.FC<{ selectedHotel: string; onSelect: (hotel:
       </button>
 
       {isOpen && (
-        <div className="absolute z-50 mt-1 <change> w-full bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden animate-in fade-in zoom-in-95 duration-100">
+        <div className="absolute z-50 mt-1 w-full bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden animate-in fade-in zoom-in-95 duration-100">
           <div className="p-2 border-b border-gray-100">
             <div className="relative">
                 <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -231,7 +231,7 @@ const SearchableHotelSelect: React.FC<{ selectedHotel: string; onSelect: (hotel:
 // --- Main App Component ---
 export function App() {
   const [view, setView] = useState<ViewState>('HOTEL_SELECT');
-  const [previousView, setPreviousView] = useState<ViewState>('HOME'); // Track history for Back button
+  const [previousView, setPreviousView] = useState<ViewState>('HOME'); 
   const [userRole, setUserRole] = useState<UserRole>('ADMIN');
   const [currentUser, setCurrentUser] = useState<AuthorizedUser | null>(INITIAL_USERS[0]);
   
@@ -517,7 +517,7 @@ export function App() {
             </div>
             {isOps && <div className="w-10 h-10 bg-white rounded-full shadow-sm flex items-center justify-center"><LogoutButton /></div>}
         </div>
-        <div className="flex-1 flex <change> flex-col items-center justify-center px-6 relative z-10 gap-4 pt-20">
+        <div className="flex-1 flex flex-col items-center justify-center px-6 relative z-10 gap-4 pt-20">
           <div className="text-center mb-2">
             <h2 className="text-3xl font-bold text-gray-800 mb-2">你好，{currentUser?.name}</h2>
             <p className="text-gray-500">{isOps ? '请管理酒店与客房数据' : '准备好开始今天的奖励申请了吗？'}</p>
@@ -531,7 +531,7 @@ export function App() {
                   <div className="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mb-3"><Megaphone size={24} /></div>
                   <span className="text-gray-800 font-bold text-base">{isOps ? '全员营销配置' : '全员营销'}</span>
               </button>
-              <button onClick={() => setView(isOps ? 'COUPON_CONFIG' : 'STAFF_COUPON')} className="bg-white p-4 rounded-2xl shadow-sm flex flex-col items-center justify-center aspect-square border-2 border-white relative <change> active:scale-95 transition-all">
+              <button onClick={() => setView(isOps ? 'COUPON_CONFIG' : 'STAFF_COUPON')} className="bg-white p-4 rounded-2xl shadow-sm flex flex-col items-center justify-center aspect-square border-2 border-white relative active:scale-95 transition-all">
                   <div className="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mb-3"><Ticket size={24} /></div>
                   <span className="text-gray-800 font-bold text-base">{isOps ? '升级券配置' : '升级券'}</span>
               </button>
@@ -625,7 +625,7 @@ export function App() {
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
-            <div className="bg-white px-4 py-4 border-b border-gray-200 flex items-center gap-4 <change> sticky top-0 z-10 shadow-sm">
+            <div className="bg-white px-4 py-4 border-b border-gray-200 flex items-center gap-4 sticky top-0 z-10 shadow-sm">
                 <button onClick={() => setView('ADMIN_ME')} className="p-1 hover:bg-gray-100 rounded-full"><ChevronLeft className="text-gray-800 w-6 h-6" /></button>
                 <h2 className="text-lg font-bold text-gray-800">维修工单</h2>
             </div>
@@ -722,7 +722,7 @@ export function App() {
                                 </div>
                                 {item.selectedChannel && <span className="text-[10px] bg-pink-50 text-pink-600 px-2 py-0.5 rounded font-bold">渠道: {item.selectedChannel}</span>}
                             </div>
-                            <div className="flex gap-2 <change> overflow-x-auto">
+                            <div className="flex gap-2 overflow-x-auto">
                                 {item.images.map((img, i) => (
                                     <img key={i} src={img} className="w-20 h-20 object-cover rounded-lg border border-gray-100" onClick={() => window.open(img)} />
                                 ))}
@@ -794,7 +794,7 @@ export function App() {
                 <button onClick={() => setMarketingHistoryTab('ALL')} className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap ${marketingHistoryTab === 'ALL' ? 'bg-green-600 text-white shadow-md' : 'bg-gray-100 text-gray-500'}`}>全部</button>
                 <button onClick={() => setMarketingHistoryTab('MKT')} className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap ${marketingHistoryTab === 'MKT' ? 'bg-indigo-600 text-white shadow-md' : 'bg-gray-100 text-gray-500'}`}>全员营销</button>
                 <button onClick={() => setMarketingHistoryTab('CPN')} className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap ${marketingHistoryTab === 'CPN' ? 'bg-amber-500 text-white shadow-md' : 'bg-gray-100 text-gray-500'}`}>升级券</button>
-                <button onClick={() => setMarketingHistoryTab('RVW')} className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap ${marketingHistoryTab === 'RVW' ? 'bg-pink-500 text-white shadow-md' : 'bg-gray-100 text-gray-500'}`}>好评引导</button>
+                <button onClick={() => setMarketingHistoryTab('RVW')} className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap ${marketingHistoryTab === 'RVW' ? 'bg-pink-50 text-pink-600' : 'bg-gray-100 text-gray-500'}`}>好评引导</button>
             </div>
             <div className="flex-1 p-4 space-y-3 overflow-y-auto">
                 {filteredHistory.length > 0 ? filteredHistory.map(item => (
@@ -1066,19 +1066,11 @@ export function App() {
   const RoomConfigView = () => {
     const [isTypeModalOpen, setIsTypeModalOpen] = useState(false);
     const [isItemModalOpen, setIsItemModalOpen] = useState(false);
-    const [isRoomSelectOpen, setIsRoomSelectOpen] = useState(false);
     const [editingItemId, setEditingItemId] = useState<string | null>(null);
     const [newTypeName, setNewTypeName] = useState('');
     const [newItem, setNewItem] = useState<{title: string; description: string; referenceImage: string}>({ title: '', description: '', referenceImage: '' });
-    const roomSelectRef = useRef<HTMLDivElement>(null);
     const selectedType = roomTypes.find(t => t.id === activeTypeId);
     const currentRooms = managedRooms.filter(r => r.typeId === activeTypeId);
-
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => { if (roomSelectRef.current && !roomSelectRef.current.contains(event.target as Node)) { setIsRoomSelectOpen(false); } };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
 
     const handleSaveItem = () => {
         if (!newItem.title.trim()) return;
@@ -1143,7 +1135,7 @@ export function App() {
                         <input value={newItem.title} onChange={e => setNewItem({...newItem, title: e.target.value})} placeholder="区域名称" className="w-full bg-gray-50 border border-gray-200 rounded-lg p-2.5 text-sm" />
                         <label className="bg-gray-50 text-gray-500 border border-gray-200 rounded-lg px-3 py-2 text-xs font-bold flex items-center gap-1 cursor-pointer"><Upload size={14} /> 上传示意图<input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} /></label>
                         <textarea value={newItem.description} onChange={e => setNewItem({...newItem, description: e.target.value})} placeholder="检查说明" className="w-full bg-gray-50 border border-gray-200 rounded-lg p-2.5 text-sm h-20" />
-                        <div className="flex <change> gap-2"><button onClick={() => setIsItemModalOpen(false)} className="flex-1 bg-gray-100 py-2.5 rounded-xl text-sm">取消</button><button onClick={handleSaveItem} className="flex-1 bg-green-600 text-white py-2.5 rounded-xl text-sm">保存</button></div>
+                        <div className="flex gap-2"><button onClick={() => setIsItemModalOpen(false)} className="flex-1 bg-gray-100 py-2.5 rounded-xl text-sm">取消</button><button onClick={handleSaveItem} className="flex-1 bg-green-600 text-white py-2.5 rounded-xl text-sm">保存</button></div>
                     </div>
                 </div>
             )}
@@ -1157,7 +1149,6 @@ export function App() {
     const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
     const [taskImages, setTaskImages] = useState<string[]>([]);
     const [formData, setFormData] = useState<Partial<ReviewTask>>({ title: '', description: '', rewardAmount: '', notes: '', channels: '' });
-    const [expandedExamples, setExpandedExamples] = useState<Record<string, boolean>>({});
 
     const handleSaveTask = () => {
         if(!formData.title) return;
@@ -1172,7 +1163,6 @@ export function App() {
 
     const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
-            // Fix: Cast each file to Blob/File to satisfy readAsDataURL which expects a Blob
             Array.from(e.target.files).forEach((file: File) => {
                 const reader = new FileReader();
                 reader.onload = (ev) => setTaskImages(prev => [...prev, ev.target?.result as string]);
@@ -1207,7 +1197,7 @@ export function App() {
                     <div className="bg-white w-full max-md rounded-2xl p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
                         <h3 className="text-lg font-bold">{editingTaskId ? '编辑' : '新建'}任务</h3>
                         <div><label className="text-xs font-bold text-gray-500">任务标题</label><input type="text" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} className="w-full bg-gray-50 p-3 rounded-lg mt-1" /></div>
-                        <div><label className="text-xs font-bold text-gray-500">奖励规则 (不在外层显示)</label><input type="text" value={formData.rewardAmount} onChange={e => setFormData({...formData, rewardAmount: e.target.value})} className="w-full bg-gray-50 p-3 rounded-lg mt-1" placeholder="仅供配置参考，酒店端不可见" /></div>
+                        <div><label className="text-xs font-bold text-gray-500">奖励规则 (配置参考)</label><input type="text" value={formData.rewardAmount} onChange={e => setFormData({...formData, rewardAmount: e.target.value})} className="w-full bg-gray-50 p-3 rounded-lg mt-1" placeholder="仅管理员可见" /></div>
                         <div><label className="text-xs font-bold text-gray-500">上传示例图</label><div className="flex flex-wrap gap-2 mt-1"><label className="w-20 h-20 border-2 border-dashed rounded-lg flex flex-col items-center justify-center bg-gray-50 cursor-pointer"><Plus size={20}/><input type="file" multiple accept="image/*" className="hidden" onChange={handleFileUpload} /></label></div></div>
                         <div className="grid grid-cols-2 gap-3 pt-4"><button onClick={() => setIsModalOpen(false)} className="bg-gray-100 py-3 rounded-xl">取消</button><button onClick={handleSaveTask} className="bg-green-600 text-white py-3 rounded-xl">发布</button></div>
                     </div>
@@ -1217,8 +1207,6 @@ export function App() {
         </div>
     );
   };
-
-  // --- Missing View Components ---
 
   const RoomEntryView = () => (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -1332,7 +1320,6 @@ export function App() {
             />
           ))}
 
-          {/* Issues Summary */}
           {Object.entries(selectedHistoryItem.steps).some(([_, s]) => (s as InspectionStepData).issues.length > 0) && (
               <div className="mt-6 space-y-3">
                   <h3 className="font-bold text-gray-800 px-1 flex items-center gap-2"><AlertTriangle size={18} className="text-red-500" /> 异常反馈汇总</h3>
@@ -1375,7 +1362,7 @@ export function App() {
       {view === 'MARKETING_DETAIL' && <MarketingDetailView />}
       {view === 'ROOM_ENTRY' && <RoomEntryView />}
       {view === 'INSPECTION' && <InspectionView />}
-      {view === 'SUCCESS' && <div className="min-h-screen bg-white flex flex-col items-center justify-center p-8 text-center animate-in fade-in duration-500"><div className="w-28 h-28 bg-green-100 rounded-full flex items-center justify-center mb-8"><CheckCircle2 className="w-16 h-16 text-green-600" /></div><h2 className="text-3xl <change> font-bold text-gray-800 mb-4">业务已提交！</h2><button onClick={() => setView('HOME')} className="w-full max-w-xs bg-green-600 text-white font-bold py-4 rounded-xl text-lg">返回首页</button></div>}
+      {view === 'SUCCESS' && <div className="min-h-screen bg-white flex flex-col items-center justify-center p-8 text-center animate-in fade-in duration-500"><div className="w-28 h-28 bg-green-100 rounded-full flex items-center justify-center mb-8"><CheckCircle2 className="w-16 h-16 text-green-600" /></div><h2 className="text-3xl font-bold text-gray-800 mb-4">业务已提交！</h2><button onClick={() => setView('HOME')} className="w-full max-w-xs bg-green-600 text-white font-bold py-4 rounded-xl text-lg">返回首页</button></div>}
       {view === 'CONFIG' && <RoomConfigView />}
       {view === 'MARKETING_CONFIG' && <GenericTaskConfigView title="全员营销配置" tasks={marketingTasks} setTasks={setMarketingTasks} type="MARKETING" />}
       {view === 'COUPON_CONFIG' && <GenericTaskConfigView title="升级券配置" tasks={couponTasks} setTasks={setCouponTasks} type="COUPON" />}
