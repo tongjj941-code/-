@@ -1,20 +1,18 @@
-
 import { GoogleGenAI } from "@google/genai";
-
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 /**
  * Analyzes an image of a broken item and suggests a fault description.
  */
 export const analyzeFaultImage = async (base64Data: string): Promise<string> => {
   try {
-    // Remove data URL prefix if present for the API call logic if needed, 
-    // but the inlineData helper usually handles standard base64 strings.
-    // We expect the raw base64 string or a data URL.
+    // 修复：将初始化移入函数内部。
+    // 在浏览器环境中，顶层初始化可能会因为环境变量注入顺序问题导致 "An API Key must be set" 报错。
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+
+    // Remove data URL prefix if present for the API call logic
     const base64 = base64Data.split(',')[1] || base64Data;
 
     // Use gemini-3-flash-preview for vision/text tasks as per guidelines.
-    // Fix: Updated model name to gemini-3-flash-preview.
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: {
