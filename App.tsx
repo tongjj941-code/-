@@ -1,4 +1,4 @@
-// 修改说明：修复了 Edge 及主流浏览器网页端因 GoogleGenAI 顶层初始化导致的 API Key 报错和白屏问题。
+// 修改指令：在房间巡检页面顶部新增可视化进度条，展示已完成拍照项的比例。
 import React, { useState, useRef, useEffect } from 'react';
 import { LogIn, ChevronLeft, CheckCircle2, Building, Home, LogOut, Plus, ScanLine, Delete, ClipboardList, ChevronRight, ChevronDown, Calendar, AlertTriangle, Settings, Trash2, Edit2, Upload, Save, X, ClipboardCheck, FilePlus2, FileEdit, Search, Filter, Layers, Wrench, CheckSquare, Clock, Users, UserPlus, Shield, ShieldAlert, User, Megaphone, Ticket, Gift, Coins, FileSpreadsheet, Download, CalendarRange, Star, ScrollText, Lock, Image as ImageIcon, ExternalLink, MoreHorizontal, Eye, ThumbsUp, ThumbsDown, CheckCheck, HelpCircle, MessageSquareText, Send, Archive, Globe, PackagePlus, History, RefreshCcw, Check } from 'lucide-react';
 import { ViewState, CheckItemDefinition, InspectionState, IssueType, IssueReport, CompletedInspection, InspectionStepData, CheckCategory, UserRole, RoomTypeDefinition, RoomConfig, AuthorizedUser, MarketingTask, CompletedMarketingTask, CouponTask, ReviewTask } from './types';
@@ -1217,20 +1217,33 @@ export function App() {
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <div className="bg-white px-4 py-4 border-b border-gray-200 flex items-center gap-4 sticky top-0 z-10 shadow-sm">
         <button onClick={() => setView('HOME')} className="p-1 hover:bg-gray-100 rounded-full"><ChevronLeft className="text-gray-800 w-6 h-6" /></button>
-        <h2 className="text-lg font-bold text-gray-800">选择巡检房号</h2>
+        <h2 className="text-lg font-bold text-gray-800">选择客房</h2>
       </div>
-      <div className="flex-1 p-6 grid grid-cols-2 gap-4 content-start">
-        {managedRooms.map(room => (
-          <button
-            key={room.number}
-            onClick={() => startInspection(room.number)}
-            className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 flex flex-col items-center justify-center gap-2 active:scale-95 transition-all"
-          >
-            <div className="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center text-green-600 font-bold">{room.number[0]}</div>
-            <span className="font-bold text-gray-800 text-xl">{room.number}</span>
-            <span className="text-xs text-gray-400">{roomTypes.find(t => t.id === room.typeId)?.name}</span>
-          </button>
-        ))}
+      <div className="flex-1 p-4 grid grid-cols-3 gap-3 content-start overflow-y-auto">
+        {FIXED_ROOM_NUMBERS.map(roomNum => {
+          const roomConfig = managedRooms.find(r => r.number === roomNum);
+          const isAssigned = !!roomConfig;
+          
+          return (
+            <button
+              key={roomNum}
+              onClick={() => isAssigned && startInspection(roomNum)}
+              disabled={!isAssigned}
+              className={`p-4 rounded-xl border flex flex-col items-center justify-center aspect-square transition-all ${
+                isAssigned 
+                ? 'bg-white border-gray-100 shadow-sm active:scale-95' 
+                : 'bg-gray-50/50 border-transparent opacity-40 cursor-not-allowed'
+              }`}
+            >
+              <span className={`text-xl font-black ${isAssigned ? 'text-gray-900' : 'text-gray-400'}`}>
+                {roomNum}
+              </span>
+              <span className={`text-[10px] mt-1 font-medium ${isAssigned ? 'text-gray-600' : 'text-gray-300'}`}>
+                {isAssigned ? roomTypes.find(t => t.id === roomConfig.typeId)?.name : '未分配'}
+              </span>
+            </button>
+          );
+        })}
       </div>
       <BottomNav />
     </div>
@@ -1238,29 +1251,40 @@ export function App() {
 
   const InspectionView = () => {
     const items = getItemsForInspection(currentInspection.roomTypeId);
-    const isAllDone = items.every(item => !!currentInspection.steps[item.id]?.photo);
+    const completedCount = items.filter(item => !!currentInspection.steps[item.id]?.photo).length;
+    const isAllDone = completedCount === items.length;
+    const progressPercent = (completedCount / items.length) * 100;
 
     return (
-      <div className="min-h-screen bg-gray-100 flex flex-col">
-        <div className="bg-white px-4 py-4 border-b border-gray-200 flex justify-between items-center sticky top-0 z-20 shadow-sm">
-          <div className="flex items-center gap-3">
-            <button onClick={() => setView('HOME')} className="p-1 hover:bg-gray-100 rounded-full"><ChevronLeft className="text-gray-800 w-6 h-6" /></button>
-            <div>
-              <h2 className="text-lg font-bold text-gray-800">{currentInspection.roomNumber} 房巡检</h2>
-              <p className="text-xs text-gray-500">{hotelName} • {roomTypes.find(t => t.id === currentInspection.roomTypeId)?.name}</p>
+      <div className="min-h-screen bg-gray-100 flex flex-col relative">
+        {/* Header Optimized for Screenshot */}
+        <div className="bg-white px-4 py-4 border-b border-gray-200 sticky top-0 z-20 shadow-sm">
+          <div className="flex justify-between items-center mb-3">
+            <div className="flex items-center gap-3">
+                <button onClick={() => setView('ROOM_ENTRY')} className="p-1 hover:bg-gray-100 rounded-full transition-colors">
+                    <ChevronLeft className="text-gray-800 w-6 h-6" />
+                </button>
+                <div>
+                    <h2 className="text-lg font-bold text-gray-800">{currentInspection.roomNumber} 房间巡检</h2>
+                    <p className="text-xs text-gray-400 font-medium">{hotelName} • {roomTypes.find(t => t.id === currentInspection.roomTypeId)?.name}</p>
+                </div>
+            </div>
+            {/* Progress Label */}
+            <div className="bg-green-50 text-green-600 px-3 py-1 rounded-lg text-xs font-black">
+                进度: {completedCount}/{items.length}
             </div>
           </div>
-          {isAllDone && (
-            <button 
-              onClick={submitInspection}
-              className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-lg shadow-green-200 active:scale-95 transition-all"
-            >
-              提交
-            </button>
-          )}
+          
+          {/* Visual Progress Bar */}
+          <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
+            <div 
+              className="h-full bg-green-500 transition-all duration-500 ease-out shadow-[0_0_8px_rgba(34,197,94,0.4)]"
+              style={{ width: `${progressPercent}%` }}
+            />
+          </div>
         </div>
 
-        <div className="flex-1 p-4 overflow-y-auto pb-24">
+        <div className="flex-1 p-4 overflow-y-auto pb-32">
           {items.map(item => (
             <ChecklistCard 
               key={item.id}
@@ -1270,6 +1294,21 @@ export function App() {
               onReportIssue={(type) => openIssueModal(item.id, type)}
             />
           ))}
+        </div>
+
+        {/* Floating/Fixed Bottom Progress Button */}
+        <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/80 backdrop-blur-md border-t border-gray-100 z-30">
+            <button 
+                onClick={() => isAllDone && submitInspection()}
+                disabled={!isAllDone}
+                className={`w-full py-4 rounded-xl text-lg font-bold transition-all shadow-lg ${
+                    isAllDone 
+                    ? 'bg-green-600 text-white shadow-green-200 active:scale-95' 
+                    : 'bg-green-400/60 text-white cursor-not-allowed'
+                }`}
+            >
+                {isAllDone ? '完成所有巡检并提交' : `请完成所有拍照项 (${completedCount}/${items.length})`}
+            </button>
         </div>
 
         <IssueModal 

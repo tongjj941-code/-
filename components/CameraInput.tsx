@@ -7,7 +7,7 @@ interface CameraInputProps {
   existingImage?: string | null;
 }
 
-export const CameraInput: React.FC<CameraInputProps> = ({ onCapture, label = "拍照", existingImage }) => {
+export const CameraInput: React.FC<CameraInputProps> = ({ onCapture, label = "点击拍照", existingImage }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [processing, setProcessing] = useState(false);
 
@@ -74,34 +74,34 @@ export const CameraInput: React.FC<CameraInputProps> = ({ onCapture, label = "�
       />
       
       {existingImage ? (
-        <div className="relative group rounded-lg overflow-hidden border border-gray-200">
-          <img src={existingImage} alt="Captured" className="w-full h-48 object-cover" />
+        <div className="relative group rounded-xl overflow-hidden border border-gray-100 shadow-sm">
+          <img src={existingImage} alt="Captured" className="w-full h-40 object-cover" />
           <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
             <button 
               onClick={() => inputRef.current?.click()}
-              className="bg-white text-gray-800 px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2"
+              className="bg-white text-gray-800 px-4 py-2 rounded-full text-xs font-black flex items-center gap-2"
             >
-              <RefreshCw size={16} /> 重拍
+              <RefreshCw size={14} /> 重拍
             </button>
           </div>
-          <div className="absolute bottom-2 right-2 bg-green-600 text-white text-xs px-2 py-1 rounded">
-            已加水印
+          <div className="absolute bottom-1 right-1 bg-green-600 text-white text-[10px] px-2 py-0.5 rounded font-bold">
+            已采样
           </div>
         </div>
       ) : (
         <button
           onClick={() => inputRef.current?.click()}
           disabled={processing}
-          className="w-full h-48 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center bg-gray-50 hover:bg-gray-100 active:bg-gray-200 transition-colors"
+          className="w-full h-40 border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-center bg-gray-50/30 hover:bg-gray-50 active:scale-95 transition-all"
         >
           {processing ? (
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
           ) : (
-            <>
-              <Camera className="w-10 h-10 text-gray-400 mb-2" />
-              <span className="text-gray-500 font-medium">{label}</span>
-              <span className="text-xs text-gray-400 mt-1">自动添加时间水印</span>
-            </>
+            <div className="flex flex-col items-center text-gray-400">
+              <Camera className="w-10 h-10 mb-2 opacity-50" />
+              <span className="text-gray-500 font-black text-sm">{label}</span>
+              <span className="text-[10px] text-gray-300 mt-1 font-medium">自动添加时间水印</span>
+            </div>
           )}
         </button>
       )}
